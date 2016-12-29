@@ -1,5 +1,9 @@
 import json
-import urllib
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib import urlopen
+
 import xmltodict
 
 from binascii import a2b_base64
@@ -58,7 +62,7 @@ class UPSConnection(object):
             url = self.test_urls[url_action]
 
         xml = self._generate_xml(url_action, ups_request)
-        resp = urllib.urlopen(url, xml.encode('ascii', 'xmlcharrefreplace'))\
+        resp = urlopen(url, xml.encode('ascii', 'xmlcharrefreplace'))\
                 .read()
 
         return UPSResult(resp)
